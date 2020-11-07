@@ -11,20 +11,36 @@ namespace TurtleGame
     {
         static void Main(string[] args)
         {
+            int width = GraphicsWindow.Width = 600;
+            int height = GraphicsWindow.Height = 600;
+
             GraphicsWindow.KeyDown += GraphicsWindow_KeyDown;
             //убрать шлейф за черепашкой
             Turtle.PenUp();
 
             GraphicsWindow.BrushColor = "red";
             var eat = Shapes.AddRectangle(10, 10);
-            Shapes.Move(eat, 200, 200);
-            
+            int x = 200;
+            int y = 200;
+            Shapes.Move(eat, x, y);
+
+            Random rand = new Random();
+
             while (true)
             {
                 Turtle.Move(10);
-                if (Turtle.X == Shapes.GetLeft(eat) && Turtle.Y == 200)
+                if ((Turtle.X <= 0 && Turtle.Angle == 270) || (Turtle.X >= GraphicsWindow.Width && Turtle.Angle == 90) || 
+                    (Turtle.Y <= 0 && Turtle.Angle == 0) || (Turtle.Y >= GraphicsWindow.Height && Turtle.Angle == 180))
                 {
-                    Shapes.Move(eat, Turtle.X + 10, 200);
+                    Turtle.Turn(180);
+                }
+
+                if (Turtle.X >= x && Turtle.X <= x+10 && Turtle.Y >= y && Turtle.Y <= y+10)
+                {
+                    x = rand.Next(0, GraphicsWindow.Width);
+                    y = rand.Next(0, GraphicsWindow.Height);
+                    Shapes.Move(eat, x, y);
+                    Turtle.Speed++;
                 }
             }
         }
